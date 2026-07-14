@@ -1,0 +1,8 @@
+/target
+*.swp
+*.swo
+.DS_Store
+config.toml
+*.toml.bak
+.env
+.env.*
