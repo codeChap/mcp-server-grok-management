@@ -1,10 +1,7 @@
 //! Audit log tools.
 
 use rmcp::{
-    ErrorData as McpError,
-    handler::server::wrapper::Parameters,
-    model::*,
-    tool, tool_router,
+    ErrorData as McpError, handler::server::wrapper::Parameters, model::*, tool, tool_router,
 };
 
 use crate::format::keys as fmt;

@@ -286,8 +286,7 @@ pub fn fmt_list_audit(v: &Value) -> String {
 
 pub fn fmt_propagation(api_key_id: &str, v: &Value) -> String {
     let mut out = format!("Propagation status for {api_key_id}:\n");
-    if let Some(map) = field(v, &["icPropagation", "ic_propagation"]).and_then(Value::as_object)
-    {
+    if let Some(map) = field(v, &["icPropagation", "ic_propagation"]).and_then(Value::as_object) {
         for (k, val) in map {
             out.push_str(&format!("  {k}: {val}\n"));
         }

@@ -4,12 +4,7 @@ mod audit;
 mod billing;
 mod keys;
 
-use rmcp::{
-    ServerHandler,
-    handler::server::tool::ToolRouter,
-    model::*,
-    tool_handler,
-};
+use rmcp::{ServerHandler, handler::server::tool::ToolRouter, model::*, tool_handler};
 use std::sync::Arc;
 
 use crate::api::Api;

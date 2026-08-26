@@ -57,13 +57,12 @@ pub fn fmt_payment_methods(v: &Value) -> String {
     }
     let mut out = format!("Payment methods ({})\n\n", methods.len());
     for (i, m) in methods.iter().enumerate() {
-        let id = field_str(m, &["paymentMethodId", "payment_method_id"]).unwrap_or_else(|| "-".into());
+        let id =
+            field_str(m, &["paymentMethodId", "payment_method_id"]).unwrap_or_else(|| "-".into());
         let ptype = field_str(m, &["paymentType", "payment_type"]).unwrap_or_else(|| "-".into());
         let added = field_str(m, &["addedTs", "added_ts"]).unwrap_or_default();
         let bi = field(m, &["billingInfo", "billing_info"]);
-        let bname = bi
-            .and_then(|b| field_str(b, &["name"]))
-            .unwrap_or_default();
+        let bname = bi.and_then(|b| field_str(b, &["name"])).unwrap_or_default();
         let bemail = bi
             .and_then(|b| field_str(b, &["email"]))
             .unwrap_or_default();
@@ -100,9 +99,7 @@ pub fn fmt_payment_methods(v: &Value) -> String {
     if let Some(pending) = field(v, &["pendingPaymentMethod", "pending_payment_method"]) {
         if !pending.is_null() {
             out.push_str("Pending payment method:\n");
-            if let Some(url) =
-                field_str(pending, &["achMicrodepositHostedVerificationUrl"])
-            {
+            if let Some(url) = field_str(pending, &["achMicrodepositHostedVerificationUrl"]) {
                 out.push_str(&format!("  ACH verification URL: {url}\n"));
             } else {
                 out.push_str(&format!("  {pending}\n"));
@@ -120,7 +117,10 @@ pub fn fmt_spending_limits(v: &Value) -> String {
     let hard = money_cell(field(sl, &["effectiveHardSl", "effective_hard_sl"]));
     let hard_auto = money_cell(field(sl, &["hardSlAuto", "hard_sl_auto"]));
     let hard_over = money_cell(field(sl, &["hardSlOverride", "hard_sl_override"]));
-    let next = money_cell(field(sl, &["nextBpDesiredSoftSl", "next_bp_desired_soft_sl"]));
+    let next = money_cell(field(
+        sl,
+        &["nextBpDesiredSoftSl", "next_bp_desired_soft_sl"],
+    ));
 
     let mut out = String::from("Postpaid spending limits (USD)\n\n");
     out.push_str(&format!("  Soft limit (user-set):     {soft}\n"));
@@ -142,4 +142,3 @@ pub fn fmt_spending_limits(v: &Value) -> String {
     );
     out
 }
-

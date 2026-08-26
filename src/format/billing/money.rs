@@ -28,7 +28,6 @@ pub fn money_cell(v: Option<&Value>) -> String {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

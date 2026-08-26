@@ -9,7 +9,9 @@ pub struct ListApiKeysParams {
     pub page_size: Option<u32>,
     #[schemars(description = "Pagination token from a previous list_api_keys call.")]
     pub pagination_token: Option<String>,
-    #[schemars(description = "Optional ACL filters — only return keys that match these ACL strings.")]
+    #[schemars(
+        description = "Optional ACL filters — only return keys that match these ACL strings."
+    )]
     pub acl_filters: Option<Vec<String>>,
     #[schemars(description = "If true, only return non-expired / active keys (default false).")]
     pub active_only: Option<bool>,

@@ -25,7 +25,10 @@ pub fn fmt_prepaid(v: &Value) -> String {
         .and_then(Value::as_array)
         .cloned()
         .unwrap_or_default();
-    out.push_str(&format!("\nRecent balance changes ({}, showing up to 20):\n", changes.len()));
+    out.push_str(&format!(
+        "\nRecent balance changes ({}, showing up to 20):\n",
+        changes.len()
+    ));
     // Show newest first if API returns oldest-first
     let mut rows = changes;
     if rows.len() > 1 {
@@ -37,7 +40,8 @@ pub fn fmt_prepaid(v: &Value) -> String {
         });
     }
     for ch in rows.iter().take(20) {
-        let origin = field_str(ch, &["changeOrigin", "change_origin"]).unwrap_or_else(|| "-".into());
+        let origin =
+            field_str(ch, &["changeOrigin", "change_origin"]).unwrap_or_else(|| "-".into());
         let status = field_str(ch, &["topupStatus", "topup_status"]).unwrap_or_default();
         let amt = parse_cents(field(ch, &["amount"])).unwrap_or(0);
         // PURCHASE negative => credit +$X
@@ -56,8 +60,11 @@ pub fn fmt_prepaid(v: &Value) -> String {
                 _ => "-".into(),
             }
         });
-        let inv = field_str(ch, &["invoice_number", "invoiceNumber", "invoiceId", "invoice_id"])
-            .unwrap_or_default();
+        let inv = field_str(
+            ch,
+            &["invoice_number", "invoiceNumber", "invoiceId", "invoice_id"],
+        )
+        .unwrap_or_default();
         let inv_s = if inv.is_empty() {
             String::new()
         } else if inv.len() > 16 {
@@ -77,4 +84,3 @@ pub fn fmt_prepaid(v: &Value) -> String {
     out.push_str("\nTop up with top_up (confirm=\"TOP-UP\", amount_cents=…).\n");
     out
 }
-

@@ -1,10 +1,7 @@
 //! Billing tools.
 
 use rmcp::{
-    ErrorData as McpError,
-    handler::server::wrapper::Parameters,
-    model::*,
-    tool, tool_router,
+    ErrorData as McpError, handler::server::wrapper::Parameters, model::*, tool, tool_router,
 };
 use serde_json::{Value, json};
 
@@ -39,8 +36,18 @@ impl GrokManagementServer {
         );
 
         let mut out = format!("=== Billing overview (team {team_id}) ===\n\n");
-        section(&mut out, "Current period", preview, fmt::fmt_invoice_preview);
-        section(&mut out, "Spending limits", limits, fmt::fmt_spending_limits);
+        section(
+            &mut out,
+            "Current period",
+            preview,
+            fmt::fmt_invoice_preview,
+        );
+        section(
+            &mut out,
+            "Spending limits",
+            limits,
+            fmt::fmt_spending_limits,
+        );
         match prepaid {
             Ok(v) => {
                 out.push_str("--- Prepaid ---\n");
@@ -57,7 +64,12 @@ impl GrokManagementServer {
             }
             Err(e) => out.push_str(&format!("--- Prepaid ---\nERROR: {e}\n\n")),
         }
-        section(&mut out, "Payment methods", methods, fmt::fmt_payment_methods);
+        section(
+            &mut out,
+            "Payment methods",
+            methods,
+            fmt::fmt_payment_methods,
+        );
         section(&mut out, "Billing contact", info, fmt::fmt_billing_info);
         Ok(ok(out))
     }
@@ -79,9 +91,7 @@ impl GrokManagementServer {
         .await)
     }
 
-    #[tool(
-        description = "Update team billing contact/address. Requires confirm=\"YES-WRITE\"."
-    )]
+    #[tool(description = "Update team billing contact/address. Requires confirm=\"YES-WRITE\".")]
     async fn set_billing_info(
         &self,
         Parameters(p): Parameters<SetBillingInfoParams>,
@@ -231,7 +241,12 @@ impl GrokManagementServer {
                 let pm = pm.clone();
                 async move { api.set_default_payment_method(&tid, &pm).await }
             },
-            move |_t, _v| format!("Default payment method set to {}.", p.payment_method_id.trim()),
+            move |_t, _v| {
+                format!(
+                    "Default payment method set to {}.",
+                    p.payment_method_id.trim()
+                )
+            },
         )
         .await)
     }

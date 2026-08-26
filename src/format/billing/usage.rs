@@ -59,7 +59,9 @@ pub fn fmt_usage(v: &Value, start: &str, end: &str, unit: &str) -> String {
     }
     rows.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
 
-    out.push_str(&format!("\nTotal (USD, summed series): ${grand:.4}\n\nBy group:\n"));
+    out.push_str(&format!(
+        "\nTotal (USD, summed series): ${grand:.4}\n\nBy group:\n"
+    ));
     for (label, sum) in rows.iter().take(40) {
         out.push_str(&format!("  ${sum:>10.4}  {label}\n"));
     }
@@ -71,4 +73,3 @@ pub fn fmt_usage(v: &Value, start: &str, end: &str, unit: &str) -> String {
     );
     out
 }
-

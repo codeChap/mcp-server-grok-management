@@ -6,11 +6,7 @@ use serde_json::{Value, json};
 use super::Api;
 
 impl Api {
-    pub async fn list_api_keys(
-        &self,
-        team_id: &str,
-        query: &[(String, String)],
-    ) -> Result<Value> {
+    pub async fn list_api_keys(&self, team_id: &str, query: &[(String, String)]) -> Result<Value> {
         self.get(&format!("/auth/teams/{team_id}/api-keys"), query)
             .await
     }

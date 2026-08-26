@@ -16,21 +16,14 @@ impl Api {
             .await
     }
 
-    pub async fn list_invoices(
-        &self,
-        team_id: &str,
-        query: &[(String, String)],
-    ) -> Result<Value> {
+    pub async fn list_invoices(&self, team_id: &str, query: &[(String, String)]) -> Result<Value> {
         self.get(&format!("/v1/billing/teams/{team_id}/invoices"), query)
             .await
     }
 
     pub async fn payment_methods(&self, team_id: &str) -> Result<Value> {
-        self.get(
-            &format!("/v1/billing/teams/{team_id}/payment-method"),
-            &[],
-        )
-        .await
+        self.get(&format!("/v1/billing/teams/{team_id}/payment-method"), &[])
+            .await
     }
 
     pub async fn set_default_payment_method(
@@ -72,11 +65,8 @@ impl Api {
     }
 
     pub async fn prepaid_balance(&self, team_id: &str) -> Result<Value> {
-        self.get(
-            &format!("/v1/billing/teams/{team_id}/prepaid/balance"),
-            &[],
-        )
-        .await
+        self.get(&format!("/v1/billing/teams/{team_id}/prepaid/balance"), &[])
+            .await
     }
 
     pub async fn top_up(&self, team_id: &str, amount_cents: u64) -> Result<Value> {

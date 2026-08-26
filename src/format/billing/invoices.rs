@@ -19,7 +19,10 @@ pub fn fmt_invoice_preview(v: &Value) -> String {
     let after = money_cell(field(core, &["amountAfterVat", "amount_after_vat"]));
     let before = money_cell(field(core, &["amountBeforeVat", "amount_before_vat"]));
     let vat = money_cell(field(core, &["vatCost", "vat_cost"]));
-    let limit = money_cell(field(v, &["effectiveSpendingLimit", "effective_spending_limit"]));
+    let limit = money_cell(field(
+        v,
+        &["effectiveSpendingLimit", "effective_spending_limit"],
+    ));
     let credits = money_cell(field(v, &["defaultCredits", "default_credits"]));
     let prepaid = money_cell(field(core, &["prepaidCredits", "prepaid_credits"]));
     let prepaid_used = money_cell(field(core, &["prepaidCreditsUsed", "prepaid_credits_used"]));
@@ -36,7 +39,10 @@ pub fn fmt_invoice_preview(v: &Value) -> String {
     // Remaining headroom if we can parse
     if let (Some(spent), Some(lim)) = (
         parse_cents(field(core, &["amountAfterVat", "amount_after_vat"])),
-        parse_cents(field(v, &["effectiveSpendingLimit", "effective_spending_limit"])),
+        parse_cents(field(
+            v,
+            &["effectiveSpendingLimit", "effective_spending_limit"],
+        )),
     ) {
         let remain = lim - spent;
         out.push_str(&format!(
@@ -66,9 +72,17 @@ pub fn fmt_invoice_preview(v: &Value) -> String {
             }
         }
         by_desc.sort_by(|a, b| b.1.cmp(&a.1));
-        out.push_str(&format!("\nLine items by product ({} raw lines → {} groups):\n", lines.len(), by_desc.len()));
+        out.push_str(&format!(
+            "\nLine items by product ({} raw lines → {} groups):\n",
+            lines.len(),
+            by_desc.len()
+        ));
         for (desc, amt, _u) in by_desc.iter().take(25) {
-            out.push_str(&format!("  {:>10}  {}\n", cents_signed_to_dollars(*amt), desc));
+            out.push_str(&format!(
+                "  {:>10}  {}\n",
+                cents_signed_to_dollars(*amt),
+                desc
+            ));
         }
         if by_desc.len() > 25 {
             out.push_str(&format!("  … +{} more groups\n", by_desc.len() - 25));
@@ -128,8 +142,11 @@ pub fn fmt_invoices(v: &Value) -> String {
                 format!("{y:04}-{m:02}")
             })
             .unwrap_or_else(|| "-".into());
-        let id = field_str(inv, &["invoiceId", "invoice_id", "invoiceNumber", "invoice_number"])
-            .unwrap_or_else(|| "-".into());
+        let id = field_str(
+            inv,
+            &["invoiceId", "invoice_id", "invoiceNumber", "invoice_number"],
+        )
+        .unwrap_or_else(|| "-".into());
         // Truncate long ids for table
         let id_short = if id.len() > 24 {
             format!("{}…", &id[..20])
@@ -189,7 +206,6 @@ pub fn fmt_invoice_detail(inv: &Value) -> String {
     out
 }
 
-
 fn format_args_str(template: &str, cols: &[&str]) -> String {
     // simple header helper
     let _ = template;
@@ -198,7 +214,6 @@ fn format_args_str(template: &str, cols: &[&str]) -> String {
         cols[0], cols[1], cols[2], cols[3], cols[4]
     )
 }
-
 
 #[cfg(test)]
 mod tests {
